@@ -394,50 +394,6 @@ namespace LibBSP
         }
 
         /// <summary>
-        /// The <see cref="LibBSP.Textures"/> object in the BSP file, if available.
-        /// </summary>
-        public Textures Textures
-        {
-            get
-            {
-                int index = Texture.GetIndexForLump(MapType);
-
-                if (index >= 0)
-                {
-                    if (!_lumps.ContainsKey(index))
-                    {
-                        _lumps.Add(index, Texture.LumpFactory(Reader.ReadLump(this[index]), this, this[index]));
-                    }
-
-                    return (Textures)_lumps[index];
-                }
-
-                return null;
-            }
-            set
-            {
-                int index = Texture.GetIndexForLump(MapType);
-                if (index >= 0)
-                {
-                    _lumps[index] = value;
-                    value.Bsp = this;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Has the <see cref="LibBSP.Textures"/> lump been loaded yet?
-        /// </summary>
-        public bool TexturesLoaded
-        {
-            get
-            {
-                int index = Texture.GetIndexForLump(MapType);
-                return LumpLoaded(index);
-            }
-        }
-
-        /// <summary>
         /// A <see cref="Lump{Vertex}"/> of <see cref="Vertex"/> objects in the BSP file representing the vertices of the BSP, if available.
         /// </summary>
         public Lump<Vertex> Vertices
@@ -477,6 +433,50 @@ namespace LibBSP
             get
             {
                 int index = VertexExtensions.GetIndexForLump(MapType);
+                return LumpLoaded(index);
+            }
+        }
+
+        /// <summary>
+        /// A <see cref="LibBSP.Visibility"/> object holding leaf visiblity data for this <see cref="BSP"/>.
+        /// </summary>
+        public Visibility Visibility
+        {
+            get
+            {
+                int index = Visibility.GetIndexForLump(MapType);
+
+                if (index >= 0)
+                {
+                    if (!_lumps.ContainsKey(index))
+                    {
+                        _lumps.Add(index, new Visibility(Reader.ReadLump(this[index]), this, this[index]));
+                    }
+
+                    return (Visibility)_lumps[index];
+                }
+
+                return null;
+            }
+            set
+            {
+                int index = Visibility.GetIndexForLump(MapType);
+                if (index >= 0)
+                {
+                    _lumps[index] = value;
+                    value.Bsp = this;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Has the <see cref="LibBSP.Visibility"/> lump been loaded yet?
+        /// </summary>
+        public bool VisibilityLoaded
+        {
+            get
+            {
+                int index = Visibility.GetIndexForLump(MapType);
                 return LumpLoaded(index);
             }
         }
@@ -570,6 +570,50 @@ namespace LibBSP
         }
 
         /// <summary>
+        /// The <see cref="LibBSP.Textures"/> object in the BSP file, if available.
+        /// </summary>
+        public Textures Textures
+        {
+            get
+            {
+                int index = Texture.GetIndexForLump(MapType);
+
+                if (index >= 0)
+                {
+                    if (!_lumps.ContainsKey(index))
+                    {
+                        _lumps.Add(index, Texture.LumpFactory(Reader.ReadLump(this[index]), this, this[index]));
+                    }
+
+                    return (Textures)_lumps[index];
+                }
+
+                return null;
+            }
+            set
+            {
+                int index = Texture.GetIndexForLump(MapType);
+                if (index >= 0)
+                {
+                    _lumps[index] = value;
+                    value.Bsp = this;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Has the <see cref="LibBSP.Textures"/> lump been loaded yet?
+        /// </summary>
+        public bool TexturesLoaded
+        {
+            get
+            {
+                int index = Texture.GetIndexForLump(MapType);
+                return LumpLoaded(index);
+            }
+        }
+
+        /// <summary>
         /// A <see cref="Lump{LibBSP.TextureInfo}"/> of <see cref="LibBSP.TextureInfo"/> objects in the BSP file, if available.
         /// </summary>
         public Lump<TextureInfo> TextureInfo
@@ -653,6 +697,50 @@ namespace LibBSP
             get
             {
                 int index = Face.GetIndexForLump(MapType);
+                return LumpLoaded(index);
+            }
+        }
+
+        /// <summary>
+        /// A <see cref="LibBSP.Lightmaps"/> object holding lightmap data for this <see cref="BSP"/>.
+        /// </summary>
+        public Lightmaps Lightmaps
+        {
+            get
+            {
+                int index = Lightmaps.GetIndexForLump(MapType);
+
+                if (index >= 0)
+                {
+                    if (!_lumps.ContainsKey(index))
+                    {
+                        _lumps.Add(index, new Lightmaps(Reader.ReadLump(this[index]), this, this[index]));
+                    }
+
+                    return (Lightmaps)_lumps[index];
+                }
+
+                return null;
+            }
+            set
+            {
+                int index = Lightmaps.GetIndexForLump(MapType);
+                if (index >= 0)
+                {
+                    _lumps[index] = value;
+                    value.Bsp = this;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Has the <see cref="LibBSP.Lightmaps"/> lump been loaded yet?
+        /// </summary>
+        public bool LightmapsLoaded
+        {
+            get
+            {
+                int index = Lightmaps.GetIndexForLump(MapType);
                 return LumpLoaded(index);
             }
         }
@@ -917,94 +1005,6 @@ namespace LibBSP
             get
             {
                 int index = Texture.GetIndexForMaterialLump(MapType);
-                return LumpLoaded(index);
-            }
-        }
-
-        /// <summary>
-        /// A <see cref="LibBSP.Visibility"/> object holding leaf visiblity data for this <see cref="BSP"/>.
-        /// </summary>
-        public Visibility Visibility
-        {
-            get
-            {
-                int index = Visibility.GetIndexForLump(MapType);
-
-                if (index >= 0)
-                {
-                    if (!_lumps.ContainsKey(index))
-                    {
-                        _lumps.Add(index, new Visibility(Reader.ReadLump(this[index]), this, this[index]));
-                    }
-
-                    return (Visibility)_lumps[index];
-                }
-
-                return null;
-            }
-            set
-            {
-                int index = Visibility.GetIndexForLump(MapType);
-                if (index >= 0)
-                {
-                    _lumps[index] = value;
-                    value.Bsp = this;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Has the <see cref="LibBSP.Visibility"/> lump been loaded yet?
-        /// </summary>
-        public bool VisibilityLoaded
-        {
-            get
-            {
-                int index = Visibility.GetIndexForLump(MapType);
-                return LumpLoaded(index);
-            }
-        }
-
-        /// <summary>
-        /// A <see cref="LibBSP.Lightmaps"/> object holding lightmap data for this <see cref="BSP"/>.
-        /// </summary>
-        public Lightmaps Lightmaps
-        {
-            get
-            {
-                int index = Lightmaps.GetIndexForLump(MapType);
-
-                if (index >= 0)
-                {
-                    if (!_lumps.ContainsKey(index))
-                    {
-                        _lumps.Add(index, new Lightmaps(Reader.ReadLump(this[index]), this, this[index]));
-                    }
-
-                    return (Lightmaps)_lumps[index];
-                }
-
-                return null;
-            }
-            set
-            {
-                int index = Lightmaps.GetIndexForLump(MapType);
-                if (index >= 0)
-                {
-                    _lumps[index] = value;
-                    value.Bsp = this;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Has the <see cref="LibBSP.Lightmaps"/> lump been loaded yet?
-        /// </summary>
-        public bool LightmapsLoaded
-        {
-            get
-            {
-                int index = Lightmaps.GetIndexForLump(MapType);
                 return LumpLoaded(index);
             }
         }
